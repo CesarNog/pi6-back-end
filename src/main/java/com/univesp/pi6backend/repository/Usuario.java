@@ -27,8 +27,12 @@ public class Usuario {
     @Column
     private String name;
 
-//    @Column
-//    private String phone;
+    @Column
+    private String age;
 
+    @Column
+    private String address;
 
+    @Column
+    private String phone;
 }

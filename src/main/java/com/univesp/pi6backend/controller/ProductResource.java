@@ -66,13 +66,19 @@ public class ProductResource {
         entity.setProduct(productDTO.getProduct());
         entity.setPrice(productDTO.getPrice());
         entity.setQuantity(productDTO.getQuantity());
+        entity.setProductPic(productDTO.getProductPic());       
 
+        if (productDTO.getSeller() != null) {
         Usuario usuario;
         Optional<Usuario> optionalUser = usuarioJpaRepository.findByName(productDTO.getSeller());
+        Usuario userNew = new Usuario(productDTO.getSeller());
+        userNew.setPhone(productDTO.getSellerPhone());
         usuario = optionalUser.orElseGet(() ->
-                usuarioJpaRepository.save(new Usuario(productDTO.getSeller())));
+                usuarioJpaRepository.save(userNew));        
         entity.setUsuario(usuario);
-
+        } else {
+            entity.setUsuario(null);
+        }
         productJpaRepository.save(entity);
         entityManager.clear();
 
@@ -84,12 +90,15 @@ public class ProductResource {
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id,
                                                  @RequestBody ProductDTO productDTO,
                                                  UriComponentsBuilder uriBuilder) {
-
+        System.out.println("Id enviado atualizar: " + id);                                            
         Product product = productJpaRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         product.setProduct(productDTO.getProduct());
         product.setPrice(productDTO.getPrice());
-        product.setUsuario(usuarioJpaRepository.findByName(productDTO.getSeller()).orElseThrow(EntityNotFoundException::new));
+        if (productDTO.getSeller() != null) {
+            product.setUsuario(usuarioJpaRepository.findByName(productDTO.getSeller()).orElseThrow(EntityNotFoundException::new));
+        }
         product.setQuantity(productDTO.getQuantity());
+        product.setProductPic(productDTO.getProductPic());
         productJpaRepository.save(product);
         URI uri = uriBuilder.path("/products/product/{id}").buildAndExpand(product.getId()).toUri();
         return ResponseEntity.created(uri).body(ProductDTOConverter.productToProductDto(product));

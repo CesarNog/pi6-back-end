@@ -29,8 +29,10 @@ public class ProductDTOConverter {
         ProductDTO productDTO = new ProductDTO();
 
         productDTO.setSeller(productUserName(product));
+        productDTO.setSellerPhone(productUserPhone(product));
         productDTO.setId(product.getId());
         productDTO.setProduct(product.getProduct());
+        productDTO.setProductPic(product.getProductPic());
         productDTO.setPrice(product.getPrice());
         productDTO.setQuantity(product.getQuantity());
 
@@ -50,6 +52,21 @@ public class ProductDTOConverter {
             return null;
         }
         return name;
+    }
+
+    private static String productUserPhone(Product product) {
+        if (product == null) {
+            return null;
+        }
+        Usuario usuario = product.getUsuario();
+        if (usuario == null) {
+            return null;
+        }
+        String phone = usuario.getPhone();
+        if (phone == null) {
+            return null;
+        }
+        return phone;
     }
 }
 

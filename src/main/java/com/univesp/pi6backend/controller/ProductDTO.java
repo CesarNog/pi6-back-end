@@ -1,6 +1,7 @@
 package com.univesp.pi6backend.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -23,4 +24,9 @@ public class ProductDTO {
     @JsonProperty
     String seller;
 
+    @JsonProperty
+    String sellerPhone;
+
+    @JsonProperty   
+    String productPic;
 }

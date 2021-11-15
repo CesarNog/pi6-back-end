@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.TableGenerator;
+
 import java.math.BigDecimal;
 
 
@@ -24,12 +26,16 @@ import java.math.BigDecimal;
 @Entity
 public class Product {
 
+    @TableGenerator(name = "Product_Gen", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "Product_Gen", initialValue = 4, allocationSize = 100)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Product_Gen")
     private Long id;
 
     @NonNull
     private String product;
+    
+    @Column
+    private String productPic;
 
     @NonNull
     @Column
